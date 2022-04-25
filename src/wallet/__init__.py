@@ -1,6 +1,6 @@
 from openpyxl import *
 from config import global_config
-
+import os
 
 class Excel:
 
@@ -22,7 +22,8 @@ class Excel:
 
 def getWallet():
     # 用户助记词路径，以xlsx格式保存，该路径由用户提供,在config.ini中配置
-    file = global_config.get('path', 'wallet_path').strip()
+    
+    file = os.path.abspath(r"..")+global_config.get('path', 'wallet_path').strip()
     address_list = Excel(file).getColValues(1)
     mnemonic_list = Excel(file).getColValues(3)
     wallet = [address_list, mnemonic_list]

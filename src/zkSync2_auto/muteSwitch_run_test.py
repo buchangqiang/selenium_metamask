@@ -4,11 +4,12 @@ import wallet
 import random
 from selenium.common.exceptions import NoSuchElementException
 from config import global_config
+import os
 
 
 def runMuteSwitchTestnet(addr):
     # 指定chromedriver路径
-    driver_path = global_config.get('path', 'driver_path').strip()
+    driver_path = os.path.abspath(r"..")+global_config.get('path', 'driver_path').strip()
     driver = auto.launchSeleniumWebdriver(driver_path)
     wait_time = global_config.get('config', 'time')
     driver.implicitly_wait(wait_time)
@@ -16,7 +17,7 @@ def runMuteSwitchTestnet(addr):
     def init():
         address = addr
         seed_phrase = wallet.getSeedPhraseV2(address)
-        password = 'TestPassword'
+        password = 'BCQ123456'
         # 导入助记词
         auto.metamaskSetup(seed_phrase, password)
         # 打开MuteSwitch测试网

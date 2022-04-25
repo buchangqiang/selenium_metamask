@@ -16,7 +16,7 @@ EXTENSION_DIR_PATH = os.path.abspath(r"..") + '\extension\extension_metamask'
 #nkbihfbeogaeaoehlefnkodbefgpgknn
 # ldgkpmnklbdkklaaepniljdeknilkebc
 # naokfoppdcikiikmdlalnjfklafcdpoc
-EXTENSION_ID = 'naokfoppdcikiikmdlalnjfklafcdpoc'
+EXTENSION_ID = 'ibglfkgkpjdhflongginilckbdekmhpj'
 
 
 def downloadMetamaskExtension():
@@ -133,18 +133,20 @@ def changeMetamaskNetwork(networkName):
     time.sleep(3)
 
 
-def addAndChangeNetwork():
-    time.sleep(5)
+def addAndChangeNetwork(isClose=False):
+    time.sleep(10)
     print("添加并切换网络开始")
     driver.execute_script("window.open();")
     driver.switch_to.window(driver.window_handles[1])
     driver.get('chrome-extension://{}/home.html'.format(EXTENSION_ID))
     # driver.refresh()
     driver.find_element_by_xpath("//button[text()='批准']").click()
+    time.sleep(1)
     driver.find_element_by_xpath("//button[text()='切换网络']").click()
-    time.sleep(3)
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
+    if isClose:
+        time.sleep(3)
+        driver.close()
+        driver.switch_to.window(driver.window_handles[0])
 
 
 def changeNetworkByChainList(network_name):
@@ -195,7 +197,7 @@ def changeNetworkByChainList(network_name):
 
 
 def connectToWebsite():
-    time.sleep(5)
+    time.sleep(8)
 
     driver.execute_script("window.open('');")
     driver.switch_to.window(driver.window_handles[1])
@@ -308,13 +310,13 @@ def addToken(tokenAddress):
     time.sleep(3)
 
 
-def signConfirm():
-    time.sleep(5)
-    checkHandles()
+def signConfirm(index=1):
     time.sleep(8)
+    # checkHandles()
+    # time.sleep(8)
 
     driver.execute_script("window.open('');")
-    driver.switch_to.window(driver.window_handles[1])
+    driver.switch_to.window(driver.window_handles[index])
 
     driver.get('chrome-extension://{}/popup.html'.format(EXTENSION_ID))
     driver.execute_script("window.scrollBy(0, document.body.scrollHeight)")
