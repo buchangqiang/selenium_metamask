@@ -13,10 +13,10 @@ EXTENSION_PATH = os.path.abspath(r"..") + '\extension\extension_metamask.crx'
 EXTENSION_DIR_PATH = os.path.abspath(r"..") + '\extension\extension_metamask'
 
 # inihpjaiejdclhmonffoboihiiafgfde
-#nkbihfbeogaeaoehlefnkodbefgpgknn
+# nkbihfbeogaeaoehlefnkodbefgpgknn
 # ldgkpmnklbdkklaaepniljdeknilkebc
 # naokfoppdcikiikmdlalnjfklafcdpoc
-EXTENSION_ID = 'ibglfkgkpjdhflongginilckbdekmhpj'
+# EXTENSION_ID = 'ibglfkgkpjdhflongginilckbdekmhpj'
 
 
 def downloadMetamaskExtension():
@@ -26,9 +26,9 @@ def downloadMetamaskExtension():
     urllib.request.urlretrieve(url, os.getcwd() + '/extension_metamask.crx')
 
 
-def launchSeleniumWebdriver(driverPath):
+def launchSeleniumWebdriver(driverPath,isUndetected=True):
     # print('path', EXTENSION_PATH)
-    # chrome_options = Options()
+    chrome_options = Options()
     
     # # chrome_options.add_argument('--headless')
     # # chrome_options.add_argument('--no-sandbox')
@@ -38,7 +38,7 @@ def launchSeleniumWebdriver(driverPath):
     # # chrome_options.add_experimental_option('useAutomationExtension', False)
     # # chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
-    # chrome_options.add_extension(EXTENSION_PATH)
+    chrome_options.add_extension(EXTENSION_PATH)
 
     options = uc.ChromeOptions()
     # options.add_extension(EXTENSION_PATH)
@@ -47,10 +47,21 @@ def launchSeleniumWebdriver(driverPath):
     # options.add_argument("--no-first-run")
 
     global driver
+    global EXTENSION_ID
+    print('start load webdriver')
+    #两种driver方式,isUndetected则使用uc.Chrome,其他则使用webdriver.Chrome
+    if isUndetected:
+        driver =uc.Chrome(options=options)
+        EXTENSION_ID = 'ibglfkgkpjdhflongginilckbdekmhpj'
+    else:
+        driver = webdriver.Chrome(options=chrome_options, executable_path=driverPath)
+        EXTENSION_ID='nkbihfbeogaeaoehlefnkodbefgpgknn'
+    
     # driver = webdriver.Chrome(options=chrome_options, executable_path=driverPath)
-    driver =uc.Chrome(options=options)
+    # driver =uc.Chrome(options=options)
+
     # time.sleep(8)
-    print("Extension has been loaded")
+    print("webdriver and extension has been loaded")
     return driver
 
 
@@ -133,11 +144,11 @@ def changeMetamaskNetwork(networkName):
     time.sleep(3)
 
 
-def addAndChangeNetwork(isClose=False):
+def addAndChangeNetwork(isClose=False,index=1):
     time.sleep(10)
     print("添加并切换网络开始")
     driver.execute_script("window.open();")
-    driver.switch_to.window(driver.window_handles[1])
+    driver.switch_to.window(driver.window_handles[index])
     driver.get('chrome-extension://{}/home.html'.format(EXTENSION_ID))
     # driver.refresh()
     driver.find_element_by_xpath("//button[text()='批准']").click()
@@ -146,7 +157,7 @@ def addAndChangeNetwork(isClose=False):
     if isClose:
         time.sleep(3)
         driver.close()
-        driver.switch_to.window(driver.window_handles[0])
+        driver.switch_to.window(driver.window_handles[index-1])
 
 
 def changeNetworkByChainList(network_name):
@@ -196,11 +207,11 @@ def changeNetworkByChainList(network_name):
     driver.switch_to.window(driver.window_handles[0])
 
 
-def connectToWebsite():
-    time.sleep(8)
+def connectToWebsite(index=1):
+    time.sleep(10)
 
     driver.execute_script("window.open('');")
-    driver.switch_to.window(driver.window_handles[1])
+    driver.switch_to.window(driver.window_handles[index])
 
     driver.get('chrome-extension://{}/popup.html'.format(EXTENSION_ID))
     driver.execute_script("window.scrollBy(0, document.body.scrollHeight)")
@@ -209,7 +220,7 @@ def connectToWebsite():
     driver.find_element_by_xpath('//button[text()="连接"]').click()
     print('Site connected to metamask')
     driver.close()
-    driver.switch_to.window(driver.window_handles[0])
+    driver.switch_to.window(driver.window_handles[index-1])
 
 
 def confirmApprovalFromMetamask():

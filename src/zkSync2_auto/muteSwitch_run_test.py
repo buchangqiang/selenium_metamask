@@ -10,21 +10,28 @@ import os
 def runMuteSwitchTestnet(addr):
     # 指定chromedriver路径
     driver_path = os.path.abspath(r"..")+global_config.get('path', 'driver_path').strip()
-    driver = auto.launchSeleniumWebdriver(driver_path)
+    driver = auto.launchSeleniumWebdriver(driver_path,False)
     wait_time = global_config.get('config', 'time')
     driver.implicitly_wait(wait_time)
 
     def init():
         address = addr
+        
         seed_phrase = wallet.getSeedPhraseV2(address)
         password = 'BCQ123456'
         # 导入助记词
+        time.sleep(10)
         auto.metamaskSetup(seed_phrase, password)
+
+        time.sleep(5)
         # 打开MuteSwitch测试网
+        print('start https://testnet.switch.mute.io/')
         driver.get('https://testnet.switch.mute.io/')
-        time.sleep(3)
+
+        print('start connectToWebsite')
         auto.connectToWebsite()
-        auto.addAndChangeNetwork()
+        print('start addAndChangeNetwork')
+        auto.addAndChangeNetwork(isClose=True)
         print('init success')
 
     # Swap TokenA for TokenB
@@ -42,7 +49,7 @@ def runMuteSwitchTestnet(addr):
 
         while True:
             try:
-                element = driver.find_element_by_xpath('//button[text()="Approve"]')
+                element = driver.find_element_by_xpath('//div[text()="Approve"]')
             except NoSuchElementException:
                 print("Swap")
                 driver.find_element_by_xpath('//button[text()="Swap"]').click()
@@ -51,7 +58,7 @@ def runMuteSwitchTestnet(addr):
                 break
             else:
                 print("Approve")
-                driver.find_element_by_xpath('//button[text()="Approve"]').click()
+                driver.find_element_by_xpath('//div[text()="Approve"]').click()
                 auto.signConfirm()
                 auto.signConfirm()
                 driver.find_element_by_xpath("//*[@alt='Close']").click()

@@ -17,8 +17,8 @@ if __name__ == '__main__':
     # print_hi('PyCharm')
     # walletList=wallet.getWallet()
 
-    zkSync2_auto.zkSync2_run_test.runTest("")
-    # zkSync2_auto.muteSwitch_run_test.runMuteSwitchTestnet("0xd7620b6e03ebfb5e14a91bc020b0ae1517d0a227")
+    # zkSync2_auto.zkSync2_run_test.runTest("")
+    zkSync2_auto.muteSwitch_run_test.runMuteSwitchTestnet("0x99467f01970c77534d0ea312aee7209728e123b7")
     
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -11,24 +11,26 @@ def runTest(address):
     driver_path = os.path.abspath(r"..")+global_config.get('path', 'driver_path').strip()
     driver = auto.launchSeleniumWebdriver(driver_path)
 
-    time.sleep(8)
+    time.sleep(5)
     # 打开zkSync2.0测试网
     wait_time = global_config.get('config', 'time')
     driver.implicitly_wait(wait_time)
     driver.get('https://portal.zksync.io/')
 
     print('start into  https://portal.zksync.io.. ')
-    seed_phrase="sword pig blossom wire peasant pave gesture upon excuse trash usage cousin shallow cloth learn about noble future surprise deliver belt memory desk pigeon"
+    seed_phrase="holiday under balcony derive access jewel nation window caught weasel output gloom scheme canoe session impact bacon hold when stadium tomato cancel trade replace"
     password = 'BCQ123456'
-    address='0xd7620b6e03ebfb5e14a91bc020b0ae1517d0a227'
+    address='0x99467f01970c77534d0ea312aee7209728e123b7'
 
     # 导入助记词
-    time.sleep(8)
+    time.sleep(10)
     auto.metamaskSetup(seed_phrase, password,1)
     network_name = 'Goerli 测试网络'
     # 切换到测试网络
+    time.sleep(4)
     auto.changeMetamaskNetwork(network_name)
     driver.switch_to.window(driver.window_handles[0])
+    time.sleep(5)
     driver.find_element_by_xpath('//span[text()="MetaMask"]').click()
     # 连接钱包
     auto.connectToWebsite()
@@ -56,7 +58,7 @@ def runTest(address):
     time.sleep(5)
     inputs = driver.find_elements_by_xpath('//input')
     inputs[0].send_keys('0.01')
-    time.sleep(1)
+    time.sleep(2)
     driver.find_element_by_xpath("//button[text()='Deposit']").click()
     # 确认交易
     print('start confirmApprovalFromMetamask')
